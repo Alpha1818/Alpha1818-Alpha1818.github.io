@@ -1,0 +1,142 @@
+#! /p/condor/workspaces/build/bin/perl -w
+##! /usr/bin/perl -w
+use strict;
+use lib 'lib/lib/site_perl';
+use WWW::Mechanize;
+use Term::ReadKey;
+
+my $ROOT_URL = 'https://condor-wiki.cs.wisc.edu/index.cgi/index';
+# Main page of the Gittrac site
+#my $ROOT_URL = 'http://localhost:8080';
+
+# Username and password to login with
+my $USERNAME = 'adesmet';
+my $PASSWORD = 'wXm1l9Rv';
+
+# Search and replace
+my $SEARCH = qr/\bcondor\b/i;
+my $REPLACE = 'HTCondor';
+
+# If this matches the text _immediately_ before
+# the $SEARCH, it will be autorejected
+my $BLACKLIST_PREFIX = qr!/p/|cs.wisc.edu/|https://|/scratch/|--enable-wsgram-|gt4-gram-!;
+
+
+my $EDIT_COMMENT = 'Bulk search and replace of Condor to HTCondor';
+
+exit main();
+
+sub verify_search_and_replace {
+	my($pre, $match, $post, $replace) = @_;
+
+	$pre =~ s/[\r]/\\r/g;
+	$pre =~ s/[\n]/\\n/g;
+	$match =~ s/[\r]/\\r/g;
+	$match =~ s/[\n]/\\n/g;
+	$replace =~ s/[\r]/\\r/g;
+	$replace =~ s/[\n]/\\n/g;
+	$post =~ s/[\r]/\\r/g;
+	$post =~ s/[\n]/\\n/g;
+	$pre = substr($pre, -34);
+	$post = substr($post, 0, 34);
+	
+	my $oldflush = $|;
+	$| = 1;
+
+	print "   $pre$match$post\n";
+	print "   $pre$replace$post\n";
+	if($pre =~ /$BLACKLIST_PREFIX/) {
+		print "    Ignoring\n";
+		$| = $oldflush;
+		return $match;
+	}
+
+	print "       y/n/q: ";
+	my $char = '?';
+	while($char !~ /[ynq]/i) {
+		ReadMode 4;
+		$char = ReadKey(0);
+		ReadMode 0;
+	}
+	print "$char\n";
+	my $return;
+	if($char =~ /q/i) {
+		print STDERR "Aborting at user request\n";
+		exit(1);
+	}
+	elsif($char =~ /y/i) { $return = $replace; }
+	elsif($char =~ /n/i) { $return = $match; }
+	else { die "Internal error: impossible input '$char'"; }
+
+	$| = $oldflush;
+
+	return $return;
+}
+
+sub main {
+	if(not defined $PASSWORD) {
+		die "You must edit $0 and set \$USERNAME and \$PASSWORD to your username and password.";
+	}
+	my $ua = WWW::Mechanize->new( autocheck=>1 ); # ua=user agent
+
+	# Main page
+	$ua->get($ROOT_URL);
+
+	# Find login page
+	$ua->follow_link(text => 'Login');
+
+	# Log in
+	$ua->submit_form(with_fields => { u=>$USERNAME, p=>$PASSWORD});
+	#$PASSWORD });
+	if($ua->content =~ /incorrect username/) {
+		die "Failed to login: bad username or password\n";
+	}
+	unless($ua->content =~ /Logout/) {
+		die "Unknown problem logging in. Perhaps bad username or password?\n";
+	}
+
+	# Off the Wiki's list of all pages
+	$ua->follow_link(text => 'Wiki');
+	$ua->follow_link(text => 'Contents');
+
+	my(@links) = $ua->find_all_links(url_regex=>qr/wiki\?p=/);
+
+	foreach my $link (@links) {
+		my $url = $link->url_abs();
+		process_page($ua, $url, $link->text());
+	}
+	return 0;
+}
+
+sub process_page {
+	my($ua, $url, $title) = @_;
+	print "\n$title ($url)\n";
+
+	$ua->get($url);
+	$ua->follow_link(text=>'Edit');
+
+	my $form = $ua->form_number(0);
+	my $before = $form->param('x');
+	my $after = $before;
+	if($after !~ /$SEARCH/) {
+		print "    clean\n";
+	}
+	$after =~ s/$SEARCH/verify_search_and_replace($`,$&,$',$REPLACE)/egm;
+	if($after eq $before) {
+		print "    No changes\n";
+		return;
+	}
+
+	# This first click is "Preview"
+	$ua->submit_form(with_fields => { x=>$after, r=>$EDIT_COMMENT}, button=>'preview');
+	# This submits for real
+	$ua->form_with_fields('x','r');
+	$ua->click_button(name=>'submit');
+	unless ($ua->find_link(text=>'Edit')) {
+		print $ua->content;
+		die "Submit attempt failed";
+	}
+	print "    Changed\n";
+}
+
+

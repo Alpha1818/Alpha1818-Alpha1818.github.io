@@ -1,0 +1,22 @@
+=head2 Thu Oct 11 16:52:39 2012: C<Module> L<WWW::Mechanize|WWW::Mechanize>
+
+=over 4
+
+=item *
+
+C<installed into: /p/condor/workspaces/adesmet/condor-cvstrac/tools/htcondor-renamer/lib/lib/site_perl>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.72>
+
+=item *
+
+C<EXE_FILES: bin/mech-dump>
+
+=back
+

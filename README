@@ -1,0 +1,118 @@
+                HTCONDOR'S CVSTRAC FORK
+
+.................................................................
+SUMMARY
+
+Just run "make" at the top level.  After a while you should end
+up with a binary in build/gittrac suitable for use.
+
+
+.................................................................
+SUMMARY
+OVERVIEW
+
+This is a fork of CVSTrac
+http://www.cvstrac.org/index.html/doc/trunk/www/index.html .
+We've modified it to support a variety of local features,
+including, but not limited to:
+
+- Private tickets
+- Relabelling/reusing some fields associated with tickets
+- Private wiki pages
+- Some general UI tweaks.
+
+It's based on CVSTrac d78282a902cc0cdf92a789215be12d1a7024b3ea
+2008-11-27 17:49:26 with changes entirely by tannenba.
+
+Since we forked, CVSTrac's public CVS repository was taken down,
+replaced with a Fossil repository.  http://fossil-scm.org Fossil
+is a revision control system created by the author of CVSTrac and
+SQLite.  It's designed to be a lightweight distributed revision
+control system with integrated Wiki and ticket tracking system.
+You probably won't need it unless you there are upstream CVSTrac
+changes you want.  You probably won't need to get changes, sinec
+CVSTrac is basically dead.  It's been replaced with Fossil.
+
+
+.................................................................
+BRANCHES
+
+master   - Our work
+
+official - The upstream source. Includes at least one set of
+		   changes that have happened since we forked and are not
+		   included in our builds.  Includes
+		   cvstrac/cvstrac.fossil, allowing access to the old
+		   revisions and potentially simplifying pulling down new
+		   revisions.
+
+
+.................................................................
+DIRECTORIES
+
+cvstrac   - The version of CVSTrac being used.
+			http://www.cvstrac.org
+
+sqlite    - The version of SQLite being used.
+			https://www.sqlite.org/
+
+build     - Where output is placed, including the final binary
+            build/gittrac
+
+data      - Data files for testing.
+	        cp -r /p/condor/gittrac-backups/data ./
+
+.................................................................
+UPDATING 
+
+CVSTrac
+
+	cd cvstrac
+	git checkout official
+	fossil pull
+	git status
+	git add <new files>
+	git commit -a
+	git checkout master
+	git merge official
+	make clean
+	make
+
+You will need fossil http://fossil-scm.org 
+
+This complexity is done so we have a "clean" official branch for
+reference work.  Note that as of Oct 11, 2012, there is work on
+the official branch that is not on our master branch!
+
+
+SQLite
+
+	Find the latest sqlite-autoconf-*.tar.gz from
+	https://www.sqlite.org/download.html
+
+	wget https://www.sqlite.org/sqlite-autoconf-VERSION-GOES-HERE.tar.gz
+	tar xvzf sqlite-autoconf-*.tar.gz
+	mv sqlite sqlite-old
+	mv sqlite-autoconf-<version> sqlite
+	git status
+	git add <new files>
+	git commit -a
+	make clean
+	make
+
+You'll probably want to do this on both master and official,
+perhaps merging from official to master.  It's not a big deal,
+since we haven't forked SQLite, nor do we anticipate doing so.
+
+
+.................................................................
+TESTING
+
+	cp -r /p/condor/gittrac-backups/data ./
+	make run
+	firefox http://localhost:8080
+
+Note that "make run" blocks until you kill the process (which
+shuts down the server).
+
+

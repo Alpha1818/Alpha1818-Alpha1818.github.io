@@ -1,0 +1,278 @@
+/* CVSTrac "clean" stylesheet.
+** Drops all the float nonsense, should be clean(er) in any browser.
+*/
+
+/* ********* Standard/default header and footer ************************* */
+body {background-color: white; padding: 2px;}
+#footer {font-size: .67em;}
+
+hr {clear: both;}
+
+/* ********* Page header ************************************************ */
+
+a {color: black; text-decoration: underline}
+
+#header { 
+          padding: 0px;
+          border: 1px #a0b5f4 solid;
+          margin: 0px;
+        }
+
+#header a { 
+			 text-decoration: none;
+        }
+
+
+#title {font-weight: bold;
+        font-size: 1.17em;
+        margin: 2px;
+       }
+
+#identity {font-size: .83em;
+           font-weight: normal;
+			  color: #a0b5f4;
+           margin: 2px;
+			  position: relative;
+			  text-align: right;
+			  top: -2em;
+			  right 0px;
+          }
+
+#navigation #current a {color: #a0b5f4}
+#navigation li {display: inline; margin: 4px; white-space: nowrap;}
+#navigation {
+				 list-style-type: none;
+             padding: 0;
+             margin: 0;
+				 font-width: bold;
+				 font-size: 0.83em;
+				 text-align: right;
+				 right: 0px;
+            }
+
+#action li {display: inline; margin: 4px; white-space: nowrap;}
+#action {list-style-type: none;
+         text-align: right;
+			background: #d0d9f4;
+         margin: 1px;
+         padding: 1px;
+         padding: 1px;
+			font-size: 0.83em;
+         }
+
+/* File breadcrumb off by default in stock CVSTrac */
+#breadcrumb {display: none}
+
+/* ********* Bits and boxes  ******************************************** */
+
+/* wiki history */
+#history {
+          float: right;
+          border: 2px #a0b5f4 solid;
+          white-space: nowrap;
+          margin: 2px; padding: 0px;
+         }
+#history h3 { margin: 2px; padding: 0px; background: #d0d9f4;
+              font-size: 1em; font-weight: bold;
+              text-align: center;
+            }
+#history ul { list-style-type: none; text-align: left;
+              margin: 2px; padding: 0px;
+            }
+#history .current { font-weight: bold; }
+#history .off { font-weight: bold; }
+#history p { margin: 2px; padding: 0px; }
+
+#wikitoc {border-spacing: 20px 0px;}
+#wikitoc th {background: #d0d9f4;}
+
+/* ********* Timeline page ******************************************** */
+#timeline {text-align: left;
+           margin: .5em 0 0 0;
+           padding: 0;
+          }
+
+/* date and milestone dividers */
+#timeline .dt {
+               font-size: .87em;
+					font-weight: bold;
+               padding: 0;
+               margin: .2em 0 .2em 0;
+              }
+#timeline .dm {
+               border: 2px #d0d9f4 solid;
+               font-size: 1em; font-weight: normal;
+               padding: 0;
+               margin: .2em 0 .2em 0;
+              }
+
+#timeline .entries {
+                    vertical-align: top;
+                    margin: 0; padding: 0;
+                    margin-left: 4em;
+                   }
+ 
+#timeline .entries dt {
+                       background-color: #d0d9f4;
+                       padding: 3px 3px;
+                       font-weight: bold;
+                       text-align: left;
+							  font-size: .87em;
+                       text-transform: uppercase;
+                       border-left: 1px solid #a0b5f4;
+                       border-right: 1px solid #a0b5f4;
+                       border-top: 1px solid #a0b5f4;
+                      }
+
+#timeline .entries dd {
+                       margin: 0 0 .5em 0;
+                       text-align: left;
+                       padding: 3px 3px;
+                       border-left: 1px solid #a0b5f4;
+                       border-right: 1px solid #a0b5f4;
+                       border-bottom: 1px solid #a0b5f4;
+                      }
+
+#timeline .entries .datetime {}
+#timeline .entries .time {}
+#timeline .entries .hint {display: none;}
+#timeline .entries .branch {background: #dddddd}
+#timeline .entries .action {background: white;}
+
+/* timeline options, down at the bottom */
+#timelineopts {
+               margin-top: 1em;
+               padding: 3px;
+               padding-top: 1em;
+               clear: both;
+               border-top: 1px solid black;
+              }
+#timelineopts fieldset {
+               margin: 1px;
+               padding: 3px;
+               border: 1px solid black;
+              }
+#timelineopts #days {}
+#timelineopts #checkout {width: 45%; float: left; padding: 3px;}
+#timelineopts #ticket {width: 45%; float: left; padding: 3px;}
+#timelineopts #timeline {width: 45%; clear: left; float: left; padding: 3px;}
+#timelineopts #other {width: 45%; float: left; padding: 3px;}
+#timelineopts #show {clear: both;}
+
+/* ********* Setup ******************************************** */
+/* setup menu */
+#index, #setup {margin: 2em 0; padding: 0;}
+
+#index dt, #setup dt {
+							 width: 30%;
+							 position: relative;
+							 left: 0;
+							 top: 1.5em;
+                      padding: 0 0 .25em .25em;
+                      font-weight: bold;
+                      white-space: nowrap;
+							 text-align: right;
+                     }
+#index dd, #setup dd {
+							 margin: 0 0 0 31%;
+                      padding: 0 0 .25em .25em;
+                     }
+
+/* ********* Wiki formatting ******************************************** */
+/* ticket markup... various forms of "fixed" are shown as striked. This list
+** would need to be updated if the user changes the ticket states
+*/
+/* .ticket {font-weight: bold} */
+.ticket .closed, .ticket .fixed, .ticket .tested, .ticket .defer
+   {text-decoration: line-through}
+
+/* background colors based on the default CVSTrac reports */
+/* .ticket .closed {background: #c8c8c8;} */
+/* .ticket .new, .ticket .active {background: #f2dcdc;} */
+/* .ticket .fixed {background: #cfe8bd;} */
+/* .ticket .tested {background: #bde5d6;} */
+/* .ticket .defer {background: #cacae5;} */
+/* .ticket .review {background: #e8e8bd;} */
+
+/* chng markup. Check-ins and milestones. */
+/* .chng {font-weight: bold} */
+.chng .event {color: orange}
+.chng .release {color: orange}
+.chng .checkin {color: red}
+.chng .branch {background: #dddddd;}
+
+/* links to Wiki pages */
+/* .wiki {font-weight: bold} */
+.wiki .missing {color: gray; font-style: italic; font-weight: normal;}
+
+/* .diff {background: #e0e0e0} */
+/* hr.diff {visibility: hidden} */
+div.difftop {float: right}
+
+/* raw HTML in wiki */
+/* div.restricted {background-color: #e0e0e0} */
+
+/* URL's in wiki markup. This puts a special character in front, but
+** you could also use a link to an image or something...
+*/
+a.external:before {content: "\0000a4"; color: #a0a0a0;}
+
+/* Path's to code mentioned in wiki markup. */
+a.file {font-family: monospace;}
+
+/* two and three asterisks... The class names are a bit lame, but
+** I'm not sure what else to call 'em
+*/
+.two {font-size: 1.17em}
+.three {font-size: 1.33em}
+
+/* user id */
+/* .user {font-weight: bold;} */
+
+/* revision */
+/* .vers {font-style: italic;} */
+
+/* ********* Icons ****************************************************** */
+.icon:before {content: "\002022"; color: black;}
+
+.icon.milestone:before {content: "\0000a4"; color: #007878;}
+.icon.del:before {content: "\0000d7"; color: red;}
+.icon.file:before {content: "\002022"; color: black;}
+.icon.dir:before {content: "\0000bb"; color: green;}
+.icon.backup:before {content: "\0000ab"; color: black;}
+.icon.checkin:before {content: "\002022"; color: blue;}
+.icon.ticket:before {content: "\00203a"; color: blue;}
+.icon.edit:before {content: "\00002a"; color: #8C80A3;}
+.icon.attach:before {content: "\0000bb"; color: blue;}
+.icon.inspect:before {content: "\002022"; color: blue;}
+
+/* each ticket type can have a timeline icon. This is usually
+** used for the ticket creation.
+*/
+.icon.type:before {content: "\0000bb"; color: purple;}
+.icon.type.code:before {content: "\0000d7"; color: red;}
+
+/* each ticket state can also have a timeline icon */
+.icon.state:before {content: "\002666"; color: #ffa000;}
+.icon.state.new:before {content: "\0000d7"; color: red;}
+.icon.state.active:before {content: "\0000d7"; color: red;}
+.icon.state.fixed:before {content: "\00221a"; color: green;}
+.icon.state.closed:before {content: "\00221a"; color: green;}
+.icon.state.defer:before {content: "\00221a"; color: green;}
+
+/* deprecated icons... they'll disappear shortly, hopefully */
+.icon.dot:before {content: "\002022"; color: blue;}
+.icon.ptr1:before {content: "\0000bb"; color: purple;}
+
+/* ********* Other ****************************************************** */
+
+.rlog {padding: 0; margin: 0; border-width: 0;}
+.rlog td, .rlog th {text-align: left;}
+.rlog .version {width: 80px; text-align: center;}
+.rlog .date {white-space: nowrap; text-align: left;}
+
+/* Zebra stripe background effect */
+.rlog .odd  {background: #d0d9f4;}
+.rlog .milestone  {background: #f7c0c0;}
+
+.rlog .branch  {background: #dddddd;}

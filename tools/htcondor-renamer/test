@@ -1,0 +1,32 @@
+#! /usr/bin/perl -w
+use strict;
+
+my(@strings) = (
+'condor monkey',
+'monkey condor',
+'/p/condor/',
+'monkey/p/condor/monkey',
+'lsf/condor',
+'condor/pbs',
+'cs.wisc.edu/condor',
+'monkeycs.wisc.edu/condor monkey',
+'condormonkey',
+'monkeycondor',
+);
+
+my $prefix_blacklist = qr!/p/|cs.wisc.edu/!;
+
+foreach (@strings) {
+	printf '%-35s:', $_;
+	if(/\bcondor\b/i) {
+		my($before, $match, $after) = ($`, $&, $');
+		if($before =~ /$prefix_blacklist$/) {
+			print "blacklist\n";
+		} else {
+			print "$before--$match--$after\n";
+		}
+	} else {
+		print "clean\n";
+
+	}
+}
